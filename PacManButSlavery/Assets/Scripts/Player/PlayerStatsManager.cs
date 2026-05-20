@@ -134,6 +134,17 @@ public class PlayerStatsManager : MonoBehaviour
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
 
+    public bool SpendMoney(int amount)
+    {
+        if (moneyTotal < amount)
+            return false;
+        else
+        {
+            moneyTotal -= amount;
+            UpdateMoneyUI();
+            return true;
+        }
+    }
 
     public void EndOfLevelReset()
     {
@@ -148,4 +159,5 @@ public class PlayerStatsManager : MonoBehaviour
 
         GameManager.Instance.ToggleShop(true);
     }
+    
 }
