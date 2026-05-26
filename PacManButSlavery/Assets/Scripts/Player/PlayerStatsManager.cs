@@ -159,5 +159,23 @@ public class PlayerStatsManager : MonoBehaviour
 
         GameManager.Instance.ToggleShop(true);
     }
+
+    public void TakeStaminaDamage(float amount)
+    {
+        currentStamina -= amount;
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+
+        if (currentStamina <= 0)
+        {
+            Debug.Log("Player has run out of stamina! Game Over.");
+            // Handle game over logic here (e.g., reload scene, show game over screen, etc.)
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            Debug.Log("Player took stamina damage! Current Stamina: " + currentStamina);
+            // StartCoroutine(TakeStaminaDamageCoroutine(amount));
+        }
+    }
     
 }

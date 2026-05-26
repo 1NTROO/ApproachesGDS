@@ -36,6 +36,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector3 transformPlayer;
     public Vector3 TransformPlayer { get { return transformPlayer; } set { transformPlayer = value; } }
 
+    [Header("Enemies")]
+    [SerializeField] private Transform[,] enemyPatrolPoints;
+    public Transform[,] EnemyPatrolPoints { get { return enemyPatrolPoints; } set { enemyPatrolPoints = value; } }
+    [SerializeField] private Transform[] enemy1PatrolPoints, enemy2PatrolPoints, enemy3PatrolPoints, enemy4PatrolPoints;
+
 
     void Awake()
     {
@@ -52,7 +57,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        GetAllPatrolPoints();
     }
 
     void Update()
@@ -77,6 +82,29 @@ public class GameManager : MonoBehaviour
             shopItem2.OnShopLoad(1);
 
         }
+    }
+
+    public void GetAllPatrolPoints()
+    {
+        if (enemyPatrolPoints != null) return;
+
+        enemyPatrolPoints = new Transform[4, 4]
+        {
+            { enemy1PatrolPoints[0], enemy1PatrolPoints[1], enemy1PatrolPoints[2], enemy1PatrolPoints[3] },
+            { enemy2PatrolPoints[0], enemy2PatrolPoints[1], enemy2PatrolPoints[2], enemy2PatrolPoints[3] },
+            { enemy3PatrolPoints[0], enemy3PatrolPoints[1], enemy3PatrolPoints[2], enemy3PatrolPoints[3] },
+            { enemy4PatrolPoints[0], enemy4PatrolPoints[1], enemy4PatrolPoints[2], enemy4PatrolPoints[3] }
+        };
+    }
+
+    public Transform[] GetPatrolPointsForEnemy(int enemyID, out Transform[] patrolPoints)
+    {
+        patrolPoints = new Transform[4];
+        for (int i = 0; i < 4; i++)
+        {
+            patrolPoints[i] = enemyPatrolPoints[enemyID, i];
+        }
+        return patrolPoints;
     }
 
     public void ChangeScene(string sceneName)

@@ -1,9 +1,16 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerCollision : MonoBehaviour
 {
     PlayerStatsManager numericals;
+
+    [SerializeField] private float staminaDamageTaken = 5f;
+    [SerializeField] private float staminaDamageTime = 1f;
+    private float staminaDamageTimer = 0f;
+    private bool isTakingStaminaDamage = false;
+
 
     void Start()
     {
@@ -12,7 +19,10 @@ public class PlayerCollision : MonoBehaviour
 
     void Update()
     {
-        
+        if (isTakingStaminaDamage)
+        {
+            TakeStaminaDamage();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -52,8 +62,34 @@ public class PlayerCollision : MonoBehaviour
     {
         if (collision.gameObject.layer == 10) // Enemies
         {
-            Debug.Log("Collided with Enemy!");
-            // Handle collision with enemy (e.g., reduce health, trigger game over, etc.)
+            if (!isTakingStaminaDamage)
+            {
+                numericals.TakeStaminaDamage(staminaDamageTaken);
+                isTakingStaminaDamage = true;
+            }
+
         }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 10) // Enemies
+        {
+            isTakingStaminaDamage = false;
+        }
+    }
+
+    void TakeStaminaDamage()
+    {
+        staminaDamageTimer += Time.deltaTime;
+
+        if (staminaDamageTimer >= staminaDamageTime)
+        {
+            numericals.TakeStaminaDamage(staminaDamageTaken);
+            staminaDamageTimer = 0f;
+        }
+
+        // Wait for the next frame before continuing the loop
+        System.Threading.Thread.Yield();
     }
 }
