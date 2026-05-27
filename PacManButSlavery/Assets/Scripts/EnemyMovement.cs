@@ -3,8 +3,18 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
+    enum EnemyState
+    {
+        Patrolling,
+        Chasing,
+        Returning
+    }
+
+    private EnemyState currentState = EnemyState.Patrolling;
+
     public Transform[] patrolPoints;
     private int currentPatrolIndex;
+    private Transform playerTransform;
     private NavMeshAgent agent;
 
     [SerializeField] private int enemyID; // 0 for enemy1, 1 for enemy2, etc.
@@ -34,10 +44,27 @@ public class EnemyMovement : MonoBehaviour
             GameManager.Instance.GetPatrolPointsForEnemy(enemyID, out patrolPoints);
         }
 
-        if (!agent.pathPending && agent.remainingDistance < 0.2f)
+        if (GameManager.Instance.TransformPlayer != null)
         {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
-            agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+            playerTransform = GameManager.Instance.TransformPlayer;
+            currentState = EnemyState.Chasing;
+        }
+        else if (currentState == EnemyState.Chasing)
+        {
+            currentState = EnemyState.Returning;
+        }
+        
+        switch (currentState)
+        {
+            case EnemyState.Patrolling:
+                Patrol();
+                break;
+            case EnemyState.Chasing:
+                Chase();
+                break;
+            case EnemyState.Returning:
+                ReturnToPatrol();
+                break;
         }
     }
 
@@ -49,5 +76,37 @@ public class EnemyMovement : MonoBehaviour
             currentPatrolIndex = 0;
             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
         }
+    }
+
+    void Patrol()
+    {
+        if (!agent.pathPending && agent.remainingDistance < 0.2f)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+        }
+
+    }
+
+    void Chase()
+    {
+        if (playerTransform != null)
+        {
+            agent.SetDestination(playerTransform.position);
+        }
+        agent.speed = 3.5f; // Increase speed when chasing
+    }
+
+    void ReturnToPatrol()
+    {
+        if (patrolPoints.Length > 0)
+        {
+            agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+        }
+        if (!agent.pathPending && agent.remainingDistance < 0.2f)
+        {
+            currentState = EnemyState.Patrolling;
+        }
+        agent.speed = 1f; // Reset speed to normal when returning
     }
 }

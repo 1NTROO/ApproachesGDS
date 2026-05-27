@@ -68,7 +68,8 @@ public class PlayerMovement : MonoBehaviour
         
         rb.linearVelocity = currentSpeed;
 
-        GameManager.Instance.TransformPlayer = transform.position;
+        if (!isMoving) GameManager.Instance.TransformPlayer = transform;
+        else if (isMoving) GameManager.Instance.TransformPlayer = null;
     }
 
     void GetInput()

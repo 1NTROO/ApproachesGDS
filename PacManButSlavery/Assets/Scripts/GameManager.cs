@@ -33,8 +33,8 @@ public class GameManager : MonoBehaviour
     private int shopPrice1, shopPrice2;
 
     [Header("Player")]
-    [SerializeField] private Vector3 transformPlayer;
-    public Vector3 TransformPlayer { get { return transformPlayer; } set { transformPlayer = value; } }
+    [SerializeField] private Transform transformPlayer;
+    public Transform TransformPlayer { get { return transformPlayer; } set { transformPlayer = value; } }
 
     [Header("Enemies")]
     [SerializeField] private Transform[,] enemyPatrolPoints;

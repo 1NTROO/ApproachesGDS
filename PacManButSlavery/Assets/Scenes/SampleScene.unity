@@ -7853,7 +7853,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 1080
@@ -13909,7 +13909,7 @@ MonoBehaviour:
   shopCanvas: {fileID: 1714446105}
   shopItem1: {fileID: 0}
   shopItem2: {fileID: 0}
-  transformPlayer: {x: 0, y: 0, z: 0}
+  transformPlayer: {fileID: 0}
   enemy1PatrolPoints:
   - {fileID: 59959850}
   - {fileID: 1761502160}
