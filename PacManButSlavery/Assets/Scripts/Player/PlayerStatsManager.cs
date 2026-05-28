@@ -153,8 +153,8 @@ public class PlayerStatsManager : MonoBehaviour
         pointsUI = null;
         moneyUI = null;
 
-        BulkGainStamina((maxStamina - currentStamina) * 0.25f + // Gain 25% of missing stamina always
-                        (currentStamina / maxStamina * 35f));   // Gain up to 35% of max stamina based on current stamina percentage, gaining more stamina if the player has more stamina left
+        BulkGainStamina((maxStamina - currentStamina) * 0.35f + // Gain 35% of missing stamina always
+                        (currentStamina / maxStamina * 25f));   // Gain up to 25% of max stamina based on current stamina percentage, gaining more stamina if the player has more stamina left
                                                                 // Rewards higher stamina, simulating exhaustion and recovery, while making it possible for players to die if they are not careful.
 
         GameManager.Instance.ToggleShop(true);
