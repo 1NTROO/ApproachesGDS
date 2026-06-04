@@ -18,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float staminaRegenerationRate = 0.1f;
     [SerializeField] private float staminaRegenerationInterval = 1f;
 
+    [Header("Chase Settings")]
+    [SerializeField] private float graceTimer = 3f;
+    private float graceTimerCurrent = 0f;
+
 
     private bool isMoving = false;
     private bool isConsumingStamina = false;
@@ -68,8 +72,26 @@ public class PlayerMovement : MonoBehaviour
         
         rb.linearVelocity = currentSpeed;
 
-        if (!isMoving) GameManager.Instance.TransformPlayer = transform;
-        else if (isMoving) GameManager.Instance.TransformPlayer = null;
+        if (!isMoving)
+        {
+            graceTimerCurrent += Time.deltaTime;
+            if (graceTimerCurrent >= graceTimer)
+            {
+                GameManager.Instance.TransformPlayer = transform;
+            }
+        }
+        else if (isMoving)
+        {
+            if (graceTimerCurrent > 0f)
+            {
+                graceTimerCurrent -= Time.deltaTime;
+                if (graceTimerCurrent < 0f)
+                {
+                    graceTimerCurrent = 0f;
+                }
+                GameManager.Instance.TransformPlayer = null;
+            }
+        } 
     }
 
     void GetInput()

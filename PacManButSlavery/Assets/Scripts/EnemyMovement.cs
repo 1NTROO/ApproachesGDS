@@ -18,6 +18,7 @@ public class EnemyMovement : MonoBehaviour
     private NavMeshAgent agent;
 
     [SerializeField] private int enemyID; // 0 for enemy1, 1 for enemy2, etc.
+    [SerializeField] private float chaseDistance = 7f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,7 +45,7 @@ public class EnemyMovement : MonoBehaviour
             GameManager.Instance.GetPatrolPointsForEnemy(enemyID, out patrolPoints);
         }
 
-        if (GameManager.Instance.TransformPlayer != null)
+        if (GameManager.Instance.TransformPlayer != null && Vector3.Distance(transform.position, GameManager.Instance.TransformPlayer.position) < chaseDistance)
         {
             playerTransform = GameManager.Instance.TransformPlayer;
             currentState = EnemyState.Chasing;
