@@ -62,6 +62,13 @@ public class PlayerCollision : MonoBehaviour
     {
         if (collision.gameObject.layer == 10) // Enemies
         {
+            if (collision.gameObject.GetComponent<EnemyMovement>() != null)
+            {
+                if (collision.gameObject.GetComponent<EnemyMovement>().CurrentState != EnemyMovement.EnemyState.Chasing)
+                {
+                    staminaDamageTaken *= 0.5f; // Reduce stamina damage by 50% if the enemy is not chasing
+                }
+            }
             if (!isTakingStaminaDamage)
             {
                 numericals.TakeStaminaDamage(staminaDamageTaken);

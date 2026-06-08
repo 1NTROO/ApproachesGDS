@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    enum EnemyState
+    public enum EnemyState
     {
         Patrolling,
         Chasing,
@@ -11,6 +11,7 @@ public class EnemyMovement : MonoBehaviour
     }
 
     private EnemyState currentState = EnemyState.Patrolling;
+    public EnemyState CurrentState { get { return currentState; } }
 
     public Transform[] patrolPoints;
     private int currentPatrolIndex;
