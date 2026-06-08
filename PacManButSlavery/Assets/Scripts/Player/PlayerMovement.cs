@@ -30,10 +30,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movementInput;
     private float moveDirection;
+    private Animator animator;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void FixedUpdate()
@@ -71,6 +73,11 @@ public class PlayerMovement : MonoBehaviour
         }
         
         rb.linearVelocity = currentSpeed;
+
+        Vector3 normalizedVelocity = Vector3.ClampMagnitude(rb.linearVelocity, 1f);
+
+        animator.SetFloat("velocityX", normalizedVelocity.x);
+        animator.SetFloat("velocityY", normalizedVelocity.y);
 
         if (!isMoving)
         {
