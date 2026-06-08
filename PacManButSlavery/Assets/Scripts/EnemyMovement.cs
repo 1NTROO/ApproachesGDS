@@ -16,6 +16,8 @@ public class EnemyMovement : MonoBehaviour
     private int currentPatrolIndex;
     private Transform playerTransform;
     private NavMeshAgent agent;
+    private Animator animator;
+    private float animationSpeed = 1f;
 
     [SerializeField] private int enemyID; // 0 for enemy1, 1 for enemy2, etc.
     [SerializeField] private float chaseDistance = 7f;
@@ -27,6 +29,8 @@ public class EnemyMovement : MonoBehaviour
 
         agent.updateRotation = false; // Disable automatic rotation
         agent.updateUpAxis = false; // Disable automatic up axis
+
+        animator = GetComponentInChildren<Animator>();
 
         if (patrolPoints.Length > 0)
         {
@@ -67,6 +71,13 @@ public class EnemyMovement : MonoBehaviour
                 ReturnToPatrol();
                 break;
         }
+
+        Vector3 normalizedVelocity = Vector3.ClampMagnitude(agent.velocity, 1f);
+
+        animator.SetFloat("velocityX", normalizedVelocity.x);
+        animator.SetFloat("velocityY", normalizedVelocity.y);
+
+        animator.SetFloat("speedMult", animationSpeed);
     }
 
     public void SetPatrolPoints(Transform[] points)
@@ -96,6 +107,7 @@ public class EnemyMovement : MonoBehaviour
             agent.SetDestination(playerTransform.position);
         }
         agent.speed = 3.5f; // Increase speed when chasing
+        animationSpeed = 2f; // Increase animation speed when chasing
     }
 
     void ReturnToPatrol()
@@ -109,5 +121,6 @@ public class EnemyMovement : MonoBehaviour
             currentState = EnemyState.Patrolling;
         }
         agent.speed = 1f; // Reset speed to normal when returning
+        animationSpeed = 1f; // Reset animation speed to normal when returning
     }
 }
