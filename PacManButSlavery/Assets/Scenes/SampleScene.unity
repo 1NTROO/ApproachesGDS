@@ -16994,7 +16994,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrentLevelManager
   pickupParent: {fileID: 1826893985}
-  levelIndexText: {fileID: 2128037677}
   ingameTimeText: {fileID: 406202585}
 --- !u!1 &294831113
 GameObject:
@@ -42915,7 +42914,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1153783465
 MonoBehaviour:
@@ -42937,7 +42936,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1269944428, guid: 140ac778329cd6343b3cc0f53190522a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -46987,7 +46986,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1645400722
 MonoBehaviour:
@@ -47009,7 +47008,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1614302972, guid: 140ac778329cd6343b3cc0f53190522a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -49692,6 +49691,7 @@ MonoBehaviour:
   - {fileID: 1761502160}
   - {fileID: 1532832340}
   - {fileID: 870167445}
+  levelIndexText: {fileID: 0}
 --- !u!4 &1933834965
 Transform:
   m_ObjectHideFlags: 0
