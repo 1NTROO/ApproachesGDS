@@ -11,6 +11,9 @@ public class PlayerCollision : MonoBehaviour
     private float staminaDamageTimer = 0f;
     private bool isTakingStaminaDamage = false;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] pickupSounds;
+    [SerializeField] private AudioClip[] powerPickupSounds;
 
     void Start()
     {
@@ -42,7 +45,8 @@ public class PlayerCollision : MonoBehaviour
                     levelManager.CheckEndLevel();
                 }
             }
-            // Handle trigger with pickup (e.g., increase score, play sound, etc.)
+            
+            AudioManager.Instance.PlayRandomSound(pickupSounds, 1, 0.1f, 0.4f);
         }
         if (other.gameObject.layer == 11) // Power Pickup
         {
@@ -54,7 +58,8 @@ public class PlayerCollision : MonoBehaviour
             {
                 numericals.AddMoney(numericals.MoneyPerPickup);
             }
-            // Handle trigger with power pickup (e.g., increase score, play sound, etc.)
+            
+            AudioManager.Instance.PlayRandomSound(powerPickupSounds, 1, 0.1f, 0.4f);
         }
     }
 
@@ -74,7 +79,6 @@ public class PlayerCollision : MonoBehaviour
                 numericals.TakeStaminaDamage(staminaDamageTaken);
                 isTakingStaminaDamage = true;
             }
-
         }
     }
 

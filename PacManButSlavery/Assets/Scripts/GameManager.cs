@@ -41,6 +41,11 @@ public class GameManager : MonoBehaviour
     public Transform[,] EnemyPatrolPoints { get { return enemyPatrolPoints; } set { enemyPatrolPoints = value; } }
     [SerializeField] private Transform[] enemy1PatrolPoints, enemy2PatrolPoints, enemy3PatrolPoints, enemy4PatrolPoints;
 
+    [Header("UI")]
+    [SerializeField] private TMPro.TextMeshProUGUI levelIndexText;
+
+    private int levelIndex = 0;
+
 
     void Awake()
     {
@@ -62,7 +67,21 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (levelIndexText == null)
+        {
+            levelIndexText = GameObject.FindGameObjectWithTag("LevelIndexText").GetComponent<TMPro.TextMeshProUGUI>();
+            if (levelIndexText == null)
+            {
+                Debug.LogError("LevelIndexText TextMeshProUGUI not found in the scene. Please assign it in the inspector or tag it as 'LevelIndexText'.");
+            }
+        }
+        else
+        {
+            if (levelIndexText.text != "Day: " + (levelIndex + 1).ToString())
+            {
+                levelIndexText.text = "Day: " + (levelIndex + 1).ToString();
+            }
+        }
     }
 
     public void ToggleShop(bool isActive)
@@ -112,5 +131,7 @@ public class GameManager : MonoBehaviour
         ToggleShop(false);
         SceneManager.LoadScene(sceneName);
         Debug.Log("Changing scene to: " + sceneName);
+        levelIndex++;
+
     }
 }

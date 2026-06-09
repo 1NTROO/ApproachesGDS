@@ -17,11 +17,12 @@ public class PlayerMovement : MonoBehaviour
     [Space(10)]
     [SerializeField] private float staminaRegenerationRate = 0.1f;
     [SerializeField] private float staminaRegenerationInterval = 1f;
+    [SerializeField] private float staminaRegenerationDelay = 1.25f;
+    private float staminaRegenerationDelayTimer = 0f;
 
     [Header("Chase Settings")]
     [SerializeField] private float graceTimer = 3f;
     private float graceTimerCurrent = 0f;
-
 
     private bool isMoving = false;
     private bool isConsumingStamina = false;
@@ -69,7 +70,22 @@ public class PlayerMovement : MonoBehaviour
         {
             print("Started regenerating stamina");
             isRegeneratingStamina = true;
-            StartCoroutine("StaminaRegeneration");
+            staminaRegenerationDelayTimer = 0f;
+        }
+        
+        if (isRegeneratingStamina)
+        {
+            if (staminaRegenerationDelayTimer < staminaRegenerationDelay)
+            {
+                staminaRegenerationDelayTimer += Time.deltaTime;
+                if (staminaRegenerationDelayTimer >= staminaRegenerationDelay)
+                {
+                    PlayerStamina stamina = GetComponent<PlayerStamina>();
+                    stamina.RegenerateStamina(staminaRegenerationRate * 0.5f); // Apply half the regeneration rate during the delay period
+                    staminaRegenerationDelayTimer = 2 * staminaRegenerationDelay; // Set timer to a value that indicates the delay period has passed
+                    StartCoroutine("StaminaRegeneration");
+                }
+            }
         }
         
         rb.linearVelocity = currentSpeed;

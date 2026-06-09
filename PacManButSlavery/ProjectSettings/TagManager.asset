@@ -8,6 +8,8 @@ TagManager:
   - PointsUI
   - MoneyUI
   - ShopCanvas
+  - LevelIndexText
+  - IngameTimeText
   layers:
   - Default
   - TransparentFX

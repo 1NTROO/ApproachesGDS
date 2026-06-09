@@ -8,6 +8,10 @@ public class PlayerStamina : MonoBehaviour
     [Header("Stamina UI")]
     [SerializeField] private Slider staminaBar;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip staminaRegenerationSound;
+
+
     void Start()
     {
         statsManager = PlayerStatsManager.Instance;
@@ -39,6 +43,8 @@ public class PlayerStamina : MonoBehaviour
     {
         statsManager.CurrentStamina += amount;
         statsManager.CurrentStamina = Mathf.Clamp(statsManager.CurrentStamina, 0, statsManager.MaxStamina);
+
+        AudioManager.Instance.PlaySound(staminaRegenerationSound, 0.1f);
     }
     public void UpdateStaminaUI()
     {

@@ -56,6 +56,9 @@ public class PlayerStatsManager : MonoBehaviour
     [SerializeField] private float currentStamina = 100f;
     public float CurrentStamina { get { return currentStamina; } set { currentStamina = value; } }
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] damageSounds;
+
     private bool staminaStarted = false;
 
     void Start()
@@ -164,6 +167,8 @@ public class PlayerStatsManager : MonoBehaviour
     {
         currentStamina -= amount;
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+
+        AudioManager.Instance.PlayRandomSound(damageSounds);
 
         if (currentStamina <= 0)
         {

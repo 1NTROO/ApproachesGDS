@@ -23,6 +23,9 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private int enemyID; // 0 for enemy1, 1 for enemy2, etc.
     [SerializeField] private float chaseDistance = 7f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip chaseSound;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -109,6 +112,8 @@ public class EnemyMovement : MonoBehaviour
         }
         agent.speed = 3.5f; // Increase speed when chasing
         animationSpeed = 2f; // Increase animation speed when chasing
+        
+        AudioManager.Instance.PlaySound(chaseSound, 0.05f);
     }
 
     void ReturnToPatrol()
