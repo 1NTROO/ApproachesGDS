@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (InputSystem.actions["Pause"].triggered)
+        if (InputSystem.actions["pause"].triggered)
         {
             if (Time.timeScale == 0f)
             {
