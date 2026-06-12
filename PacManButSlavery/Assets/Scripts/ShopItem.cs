@@ -38,7 +38,7 @@ public class ShopItem : MonoBehaviour
         switch (thisItem)
         {
             case ItemType.Stamina:
-                priceBase = 100;
+                priceBase = 75;
                 priceMult = 2;
                 currentPrice = priceBase;
                 buyButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Buy\n" + currentPrice;

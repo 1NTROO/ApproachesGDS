@@ -46062,11 +46062,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 130
   maxSpeed: 75
-  staminaConsumptionRate: 0.75
+  staminaConsumptionRate: 0.45
   staminaConsumptionInterval: 0.8
   staminaRegenerationRate: 0.9
-  staminaRegenerationInterval: 4
-  staminaRegenerationDelay: 1.25
+  staminaRegenerationInterval: 2.5
+  staminaRegenerationDelay: 1
   graceTimer: 3
 --- !u!50 &1572356173
 Rigidbody2D:
