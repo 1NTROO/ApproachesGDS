@@ -38,13 +38,13 @@ public class ShopItem : MonoBehaviour
         switch (thisItem)
         {
             case ItemType.Stamina:
-                priceBase = 250;
+                priceBase = 100;
                 priceMult = 2;
                 currentPrice = priceBase;
                 buyButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Buy\n" + currentPrice;
                 break;
             case ItemType.Free:
-                priceBase = 50000;
+                priceBase = 5000;
                 priceMult = 1;
                 currentPrice = priceBase;
                 buyButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Buy\n" + currentPrice;
