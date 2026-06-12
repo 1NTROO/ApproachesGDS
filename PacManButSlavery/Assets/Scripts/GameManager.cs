@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -82,6 +83,19 @@ public class GameManager : MonoBehaviour
                 levelIndexText.text = "Day: " + (levelIndex + 1).ToString();
             }
         }
+
+        if (InputSystem.actions["Pause"].triggered)
+        {
+            if (Time.timeScale == 0f)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+            
+        }
     }
 
     public void ToggleShop(bool isActive)
@@ -133,5 +147,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Changing scene to: " + sceneName);
         levelIndex++;
 
+    }
+
+    void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    void ResumeGame()
+    {
+        Time.timeScale = 1f;
     }
 }
