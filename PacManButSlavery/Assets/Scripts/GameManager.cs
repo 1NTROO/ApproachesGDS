@@ -84,18 +84,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (InputSystem.actions["pause"].triggered)
-        {
-            if (Time.timeScale == 0f)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+        // if (InputSystem.actions["pause"].triggered)
+        // {
+        //     if (Time.timeScale == 0f)
+        //     {
+        //         ResumeGame();
+        //     }
+        //     else
+        //     {
+        //         PauseGame();
+        //     }
             
-        }
+        // }
     }
 
     public void ToggleShop(bool isActive)
