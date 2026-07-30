@@ -6,15 +6,25 @@ using UnityEngine;
 public class CurrentLevelManager : MonoBehaviour
 {
     [SerializeField] private GameObject pickupParent;
+    [SerializeField] private GameObject specialPickupParent;
 
     private float ingameTime = 7f;
 
-    [Header("Pickups")]
+    [Header("Regular Pickups")]
     private int currentPickupCount;
     [SerializeField] private int pickupCountAtStart = 350;
     [SerializeField] private GameObject pickupPrefab;
     [SerializeField] private List<GameObject> templatesLeft = new List<GameObject>();
     [SerializeField] private List<GameObject> templatesRight = new List<GameObject>();
+
+    [Header("Special Pickups")]
+    [SerializeField] private GameObject moneyPrefab;
+    [SerializeField] private GameObject spawnLocationObj;
+    private List<Transform> spawnLocations = new List<Transform>();
+    [SerializeField] private float spawnTimer = 20.0f;
+    private float spawnTimerCurrent = 0.0f;
+    private float specialSpawnOdds = 0.0f;
+
 
     [Header("UI")]
     [SerializeField] private TMPro.TextMeshProUGUI ingameTimeText;
@@ -26,10 +36,15 @@ public class CurrentLevelManager : MonoBehaviour
 
         GeneratePickups(GetRandomTemplate(templatesLeft));
         GeneratePickups(GetRandomTemplate(templatesRight));
+
+        spawnLocationObj.GetComponentsInChildren<Transform>(true, spawnLocations);
     }
 
     void Update()
     {
+        spawnTimerCurrent += Time.deltaTime;
+        if (spawnTimerCurrent >= spawnTimer) SpecialPickupLogic();
+
         if (ingameTimeText == null)
         {
             ingameTimeText = GameObject.FindGameObjectWithTag("IngameTimeText").GetComponent<TMPro.TextMeshProUGUI>();
@@ -42,7 +57,10 @@ public class CurrentLevelManager : MonoBehaviour
 
     void GeneratePickups(GameObject obj)
     {
-        Transform[] coordinatesList = obj.GetComponentsInChildren<Transform>(true);
+        List<Transform> coordinatesList = new List<Transform>();
+        obj.GetComponentsInChildren<Transform>(true, coordinatesList);
+
+        coordinatesList.RemoveAt(0); // Remove the first item, which is the Transform of the parent object. 
 
         foreach (Transform coord in coordinatesList)
         {
@@ -59,6 +77,19 @@ public class CurrentLevelManager : MonoBehaviour
             Debug.LogError("Random template object not found.");
         }
         return obj;
+    }
+
+    void SpecialPickupLogic()
+    {
+        float rand = Random.value;
+        if (rand <= 1 / (1 + specialSpawnOdds))
+        {
+            Transform t = spawnLocations[Random.Range(1, spawnLocations.Count)]; // Starts at 1 because at index 0 the Transform of the parent object lives (which is [0, 0, 0]). 
+            Instantiate(moneyPrefab, t.position, t.rotation);
+            print("spawned obj at " + t.position);
+        }
+        specialSpawnOdds++;
+        spawnTimerCurrent = 0;
     }
 
     public void CheckEndLevel()
