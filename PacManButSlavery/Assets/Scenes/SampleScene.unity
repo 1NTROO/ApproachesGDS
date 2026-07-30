@@ -43402,7 +43402,7 @@ MonoBehaviour:
   - {fileID: 966913763}
   moneyPrefab: {fileID: 5630423079153884965, guid: f407f9fb4592e864ba62fb0ebe66bbf1, type: 3}
   spawnLocationObj: {fileID: 719465699}
-  spawnTimer: 15
+  spawnTimer: 3
   ingameTimeText: {fileID: 0}
 --- !u!1 &268542890
 GameObject:
