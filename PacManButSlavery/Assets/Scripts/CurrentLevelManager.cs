@@ -84,9 +84,15 @@ public class CurrentLevelManager : MonoBehaviour
         float rand = Random.value;
         if (rand <= 1 / (1 + specialSpawnOdds))
         {
-            Transform t = spawnLocations[Random.Range(1, spawnLocations.Count)]; // Starts at 1 because at index 0 the Transform of the parent object lives (which is [0, 0, 0]). 
+            if (spawnLocations.Count <= 1)
+            {
+                Debug.LogError("No spawn locations found for special pickups.");
+                return;
+            }
+            int randomIndex = Random.Range(1, spawnLocations.Count); // Starts at 1 because at index 0 the Transform of the parent object lives (which is [0, 0, 0]).
+            Transform t = spawnLocations[randomIndex];
             Instantiate(moneyPrefab, t.position, t.rotation);
-            print("spawned obj at " + t.position);
+            spawnLocations.RemoveAt(randomIndex);
         }
         specialSpawnOdds++;
         spawnTimerCurrent = 0;

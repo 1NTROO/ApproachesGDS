@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerStatsManager : MonoBehaviour
@@ -55,6 +56,20 @@ public class PlayerStatsManager : MonoBehaviour
     public float MaxStamina { get { return maxStamina; } }
     [SerializeField] private float currentStamina = 100f;
     public float CurrentStamina { get { return currentStamina; } set { currentStamina = value; } }
+    
+    [Header("Goal Values")]
+    [SerializeField] private float literacy = 0f;
+    public float Literacy { get { return literacy; }}
+    [SerializeField] private Slider literacySlider;
+    private float literacyGoal = 5f;
+
+    [SerializeField] private float nutrition = 0f;
+    public float Nutrition { get { return nutrition; } }
+    [SerializeField] private Slider nutritionSlider;
+    private float nutritionGoal = 50f;
+
+    [SerializeField] private Slider wealthSlider;
+    private float wealthGoal = 1000f;
 
     [Header("Audio")]
     [SerializeField] private AudioClip[] damageSounds;
@@ -129,11 +144,20 @@ public class PlayerStatsManager : MonoBehaviour
         {
             moneyUI.text = "Money: " + moneyTotal;
         }
+        if (wealthSlider != null)
+        {
+            UpdateWealthSlider();
+        }
     }
 
     public void BulkGainStamina(float amount)
     {
         currentStamina += amount;
+        if (currentStamina > maxStamina)
+        {
+            float overflow = currentStamina - maxStamina;
+            ModifyNutrition(overflow / 2f); // Convert 50% of the overflow into nutrition
+        }
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
 
@@ -146,6 +170,47 @@ public class PlayerStatsManager : MonoBehaviour
             moneyTotal -= amount;
             UpdateMoneyUI();
             return true;
+        }
+    }
+
+    public void ModifyLiteracy(float amount)
+    {
+        literacy += amount;
+        literacy = Mathf.Clamp(literacy, 0, literacyGoal);
+        if (literacySlider != null)
+        {
+            literacySlider.value = literacy / literacyGoal;
+        }
+    }
+
+    public void ModifyNutrition(float amount)
+    {
+        nutrition += amount;
+        if (nutritionSlider != null)
+        {
+            if (nutrition > nutritionGoal)
+            {
+                nutritionSlider.value = 1f; // Set to max if nutrition exceeds the goal
+            }
+            else
+            {
+                nutritionSlider.value = nutrition / nutritionGoal;
+            }
+        }
+    }
+
+    public void UpdateWealthSlider()
+    {
+        if (wealthSlider != null)
+        {
+            if (moneyTotal > wealthGoal)
+            {
+                wealthSlider.value = 1f; // Set to max if money exceeds the goal
+            }
+            else
+            {
+                wealthSlider.value = moneyTotal / wealthGoal;
+            }
         }
     }
 
