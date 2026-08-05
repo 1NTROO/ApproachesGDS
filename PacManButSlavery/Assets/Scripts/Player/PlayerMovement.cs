@@ -46,9 +46,10 @@ public class PlayerMovement : MonoBehaviour
         currentSpeed = new Vector3( moveDirection < 0 ? movementInput.x : 0, 
                                     moveDirection > 0 ? movementInput.y : 0) 
                                     * speed 
+                                    * PlayerStatsManager.Instance.SpeedModifier
                                     * Time.deltaTime;
 
-        currentSpeed = Vector3.ClampMagnitude(currentSpeed, maxSpeed);
+        currentSpeed = Vector3.ClampMagnitude(currentSpeed, maxSpeed * PlayerStatsManager.Instance.SpeedModifier);
 
         isMoving = PlayerMovingCheck();
 
@@ -95,6 +96,8 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("velocityX", normalizedVelocity.x);
         animator.SetFloat("velocityY", normalizedVelocity.y);
 
+        animator.SetFloat("AnimSpeedModifier", PlayerStatsManager.Instance.SpeedModifier);
+
         if (!isMoving)
         {
             graceTimerCurrent += Time.deltaTime;
@@ -137,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForSeconds(staminaConsumptionInterval);
 
             PlayerStamina stamina = GetComponent<PlayerStamina>();
-            stamina.ConsumeStamina(staminaConsumptionRate); // Consume stamina based on the defined rate
+            stamina.ConsumeStamina(staminaConsumptionRate * (1 / PlayerStatsManager.Instance.StaminaConsumptionModifier)); // Consume stamina based on the defined rate
 
             isConsumingStamina = false; // Reset the flag to allow for the next consumption cycle
         }

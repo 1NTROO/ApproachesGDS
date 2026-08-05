@@ -25,9 +25,26 @@ public class PlayerInventoryManager : MonoBehaviour
             {
                 if (manualConsume != SO.canManuallyConsume)
                 {
-                    return false;
+                    return false; // Cannot use the item if the manualConsume flag does not match the item's canManuallyConsume property
                 }
                 SO.UseItem();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool EquipItem(string itemName)
+    {
+        foreach (var SO in itemSOs)
+        {
+            if (SO.itemName == itemName)
+            {
+                if (SO.canBeConsumed)
+                {
+                    return false; // Cannot equip an item that can be consumed
+                }
+                SO.EquipItem();
                 return true;
             }
         }
@@ -41,6 +58,7 @@ public class PlayerInventoryManager : MonoBehaviour
             if (!itemSlots[i].isFull)
             {
                 itemSlots[i].AddItem(itemName, itemThumbnail, itemDescription, isContraband, itemType);
+                EquipItem(itemName); // Equip the item when added to inventory
                 break;
             }
         }
@@ -58,9 +76,11 @@ public class PlayerInventoryManager : MonoBehaviour
 
 public enum ItemType
 {
+    None,
     Stamina,
     Movement,
     Threat,
     Literacy,
+    Money,
     Bonus
 }

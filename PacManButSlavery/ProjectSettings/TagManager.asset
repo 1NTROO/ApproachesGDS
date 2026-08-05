@@ -10,6 +10,7 @@ TagManager:
   - ShopCanvas
   - LevelIndexText
   - IngameTimeText
+  - ShopItemBuyButton
   layers:
   - Default
   - TransparentFX

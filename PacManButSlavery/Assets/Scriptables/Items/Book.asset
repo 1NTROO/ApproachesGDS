@@ -16,3 +16,4 @@ MonoBehaviour:
   statToModify: 2
   statModifyValue: 1
   canManuallyConsume: 0
+  canBeConsumed: 1

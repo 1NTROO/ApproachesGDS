@@ -70,6 +70,16 @@ public class PlayerStatsManager : MonoBehaviour
 
     [SerializeField] private Slider wealthSlider;
     private float wealthGoal = 1000f;
+    [Space(10)]
+    [Header("Equipment Stat Modifiers")]
+    [SerializeField] private float speedModifier = 1f;
+    public float SpeedModifier { get { return speedModifier; } }
+    [SerializeField] private float staminaConsumptionModifier = 1f;
+    public float StaminaConsumptionModifier { get { return staminaConsumptionModifier; } }
+    [SerializeField] private float threatDetectionModifier = 1f;
+    public float ThreatDetectionModifier { get { return threatDetectionModifier; } }
+    [SerializeField] private float moneyGainModifier = 1f;
+    public float MoneyGainModifier { get { return moneyGainModifier; } }
 
     [Header("Audio")]
     [SerializeField] private AudioClip[] damageSounds;
@@ -124,7 +134,7 @@ public class PlayerStatsManager : MonoBehaviour
 
     public void AddMoney(int amount)
     {
-        moneyTotal += amount;
+        moneyTotal += Mathf.RoundToInt(amount * moneyGainModifier);
         Debug.Log("Money: " + moneyTotal);
 
         UpdateMoneyUI();
@@ -197,6 +207,30 @@ public class PlayerStatsManager : MonoBehaviour
                 nutritionSlider.value = nutrition / nutritionGoal;
             }
         }
+    }
+
+    public void ModifyThreatDetection(float amount)
+    {
+        threatDetectionModifier -= amount;
+        if (threatDetectionModifier < 0f)
+        {
+            threatDetectionModifier = 0f; // Ensure it doesn't go below 0
+        }
+    }
+
+    public void ModifySpeed(float amount)
+    {
+        speedModifier += amount;
+    }
+
+    public void ModifyStaminaConsumption(float amount)
+    {
+        staminaConsumptionModifier += amount;
+    }
+
+    public void ModifyMoneyGain(float amount)
+    {
+        moneyGainModifier += amount;
     }
 
     public void UpdateWealthSlider()

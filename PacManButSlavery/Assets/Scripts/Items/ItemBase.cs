@@ -15,9 +15,13 @@ public class ItemBase : MonoBehaviour
     
 
     [Header("Item Shop Settings")]
-    [SerializeField] private int price;
+    public int price;
     public Sprite itemThumbnail;
     [TextArea] [SerializeField] private string itemDescription;
+    public string ItemDescription { 
+                                    get { return itemDescription; } 
+                                    set { itemDescription = value; } 
+                                    }
     
 
     void Start()
@@ -30,20 +34,22 @@ public class ItemBase : MonoBehaviour
         switch (thisItemType)
         {
             case ItemType.Stamina:
-                if (InputSystem.actions["Interact1"].triggered)
-                {
-                    AddToInventory();
-                }
+                // if (InputSystem.actions["Interact1"].triggered)
+                // {
+                //     AddToInventory();
+                // }
                 break;
             case ItemType.Movement:
-                break;
-            case ItemType.Threat:
-                break;
-            case ItemType.Literacy:
                 if (InputSystem.actions["Interact2"].triggered)
                 {
                     AddToInventory();
                 }
+                break;
+            case ItemType.Threat:
+                break;
+            case ItemType.Literacy:
+                break;
+            case ItemType.Money:
                 break;
             case ItemType.Bonus:
                 break;

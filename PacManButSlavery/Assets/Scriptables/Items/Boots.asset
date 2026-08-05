@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32c866e281bd2da42a15ff5087e62381, type: 3}
-  m_Name: Food
+  m_Name: Boots
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  itemName: Food
-  statToModify: 1
-  statModifyValue: 25
-  canManuallyConsume: 1
-  canBeConsumed: 1
+  itemName: Boots
+  statToModify: 4
+  statModifyValue: 0.2
+  canManuallyConsume: 0
+  canBeConsumed: 0

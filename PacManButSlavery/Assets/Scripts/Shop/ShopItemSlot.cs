@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemSlot : MonoBehaviour, IPointerClickHandler
+public class ShopItemSlot : MonoBehaviour, IPointerClickHandler
 {
     [Header("Item Data")]
     public string itemName;
@@ -10,6 +10,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public string itemDescription;
     public bool isFull;
     public Sprite emptySprite;
+    public int itemPrice;
 
     [Header("Item Slot")]
     [SerializeField] private Image itemImage;
@@ -24,13 +25,14 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     private bool itemIsContraband;
     public TMPro.TextMeshProUGUI itemContrabandText;
     public ItemType itemType;
+    public TMPro.TextMeshProUGUI itemPriceText;
 
+    private ShopManager shopManager;
 
-    private PlayerInventoryManager inventoryManager;
 
     void Start()
     {
-        inventoryManager = FindAnyObjectByType<PlayerInventoryManager>();
+        shopManager = FindAnyObjectByType<ShopManager>();
     }
 
     void Update()
@@ -38,13 +40,14 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         
     }
 
-    public void AddItem(string itemName, Sprite itemThumbnail, string itemDescription, bool isContraband, ItemType itemType)
+    public void AddItem(string itemName, Sprite itemThumbnail, string itemDescription, bool isContraband, ItemType itemType, int itemPrice)
     {
         this.itemName = itemName;
         this.itemThumbnail = itemThumbnail;
         this.itemDescription = itemDescription;
         this.itemIsContraband = isContraband;
         this.itemType = itemType;
+        this.itemPrice = itemPrice;
 
         isFull = true;
 
@@ -67,7 +70,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnLeftClick()
     {
-        inventoryManager.DeselectAllItems();
+        shopManager.DeselectAllItems();
         selectedItemHighlight.SetActive(true);
         isSelected = true;
 
@@ -76,6 +79,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemDescriptionImage.sprite = itemThumbnail;
         itemNameText.text = itemName;
         itemDescriptionText.text = itemDescription;
+        itemPriceText.text = "$" + itemPrice.ToString();
 
         if (itemIsContraband)
         {
@@ -99,17 +103,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnRightClick()
     {
-        if (inventoryManager.UseItem(itemName, true))
-        {
-            ClearSlot();
-            selectedItemHighlight.SetActive(false);
-            isSelected = false;
-
-            print("Used item: " + itemName);
-        }
     }
 
-    private void ClearSlot()
+    public void ClearSlot()
     {
         itemName = "";
         // itemThumbnail = null;
@@ -124,5 +120,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemNameText.text = "";
         itemDescriptionText.text = "";
         itemContrabandText.text = "";
+
+        selectedItemHighlight.SetActive(false);
+        isSelected = false;
     }
 }
