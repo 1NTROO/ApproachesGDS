@@ -167,7 +167,7 @@ public class ShopManager : MonoBehaviour
     {
         // Logic to handle buying an item
         // You can check if the player has enough currency, deduct the cost, and add the item to the player's inventory
-        foreach (var i in items)
+        foreach (var i in itemsInShop)
         {
             if (i.name == itemName)
             {
