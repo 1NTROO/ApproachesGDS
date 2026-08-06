@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class ShopManager : MonoBehaviour
 {
@@ -15,9 +17,17 @@ public class ShopManager : MonoBehaviour
     public GameObject shopPanel; // Reference to the shop UI panel
     public ShopItemSlot[] itemSlots; // Array to hold the item slots in the shop UI
     public Button buyButton; // Reference to the buy button in the shop UI
+    public Image shopInteractionPrompt; // Reference to the shop interaction prompt UI element
+
+    private bool isFaded = true; // Flag to check if the shop interaction prompt is faded in or out
+
+    private PlayerMovement playerMovement; // Reference to the PlayerMovement script
 
     void Start()
     {
+        playerMovement = FindAnyObjectByType<PlayerMovement>(); // Get the PlayerMovement script from the player object
+        shopInteractionPrompt.DOFade(0f, 0f); // Ensure the shop interaction prompt is hidden at the start
+        shopInteractionPrompt.GetComponentInChildren<TMPro.TextMeshProUGUI>().DOFade(0f, 0f); // Ensure the prompt text is hidden at the start
         GenerateShopItems(); // Generate the items in the shop at the start
         if (shopPanel != null)
         {
@@ -29,7 +39,8 @@ public class ShopManager : MonoBehaviour
         }
         if (buyButton != null)
         {
-            buyButton.onClick.AddListener(() => {
+            buyButton.onClick.AddListener(() =>
+            {
                 foreach (var slot in itemSlots)
                 {
                     if (slot.isSelected)
@@ -55,9 +66,9 @@ public class ShopManager : MonoBehaviour
 
     void Update()
     {
-        if (InputSystem.actions["Interact1"].triggered)
+        if (PlayerDistanceCheck())
         {
-            if (shopPanel != null)
+            if (InputSystem.actions["Interact"].triggered)
             {
                 if (shopPanel.activeSelf)
                 {
@@ -67,10 +78,6 @@ public class ShopManager : MonoBehaviour
                 {
                     OpenShop();
                 }
-            }
-            else
-            {
-                Debug.LogError("Shop Panel is not assigned in the inspector.");
             }
         }
     }
@@ -88,6 +95,30 @@ public class ShopManager : MonoBehaviour
         // Logic to close the shop UI
         shopPanel.SetActive(false);
         Time.timeScale = 1f; // Resume the game when the shop is closed
+    }
+
+    public bool PlayerDistanceCheck()
+    {
+        if (Vector2.Distance(playerMovement.transform.position, transform.position) <= 1.5f) // Check if the player is within interaction range
+        {
+            if (isFaded)
+            {
+                shopInteractionPrompt.DOFade(1f, 0.3f); // Fade in the shop interaction prompt
+                shopInteractionPrompt.GetComponentInChildren<TMPro.TextMeshProUGUI>().DOFade(1f, 0.3f); // Fade in the prompt text
+                isFaded = false;
+            }
+            return true; // Player is close enough to interact with the shop
+        }
+        else
+        {
+            if (!isFaded)
+            {
+                shopInteractionPrompt.DOFade(0f, 0.3f); // Fade out the shop interaction prompt
+                shopInteractionPrompt.GetComponentInChildren<TMPro.TextMeshProUGUI>().DOFade(0f, 0.3f); // Fade out the prompt text
+                isFaded = true;
+            }
+            return false; // Player is too far away to interact with the shop
+        }
     }
 
     void GenerateShopItems()
@@ -151,7 +182,7 @@ public class ShopManager : MonoBehaviour
                         inventoryManager.AddItemToInventory(values.name, values.itemThumbnail, values.ItemDescription, values.IsContraband, values.thisItemType);
                     }
                     return true; // Item purchased successfully
-                    
+
                 }
                 else
                 {
