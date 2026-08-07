@@ -116,7 +116,7 @@ public class EnemyMovement : MonoBehaviour
 
         // Debug.DrawRay(start, dir * distance, Color.black);
 
-        RaycastHit2D sightTest = Physics2D.Raycast(start, dir, distance, ~LayerMask.GetMask("Enemy"));
+        RaycastHit2D sightTest = Physics2D.Raycast(start, dir, distance, ~LayerMask.GetMask("Enemy, Pickup"));
         if (sightTest.collider != null)
         {
             Debug.Log(sightTest.collider.gameObject.name);
