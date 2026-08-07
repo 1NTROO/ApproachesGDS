@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,13 +35,14 @@ public class GameManager : MonoBehaviour
     private int shopPrice1, shopPrice2;
 
     [Header("Player")]
-    [SerializeField] private Transform transformPlayer;
-    public Transform TransformPlayer { get { return transformPlayer; } set { transformPlayer = value; } }
+    [SerializeField] private bool playerHasContraband;
+    public bool PlayerHasContraband { get { return playerHasContraband; } set { playerHasContraband = value; } }
 
     [Header("Enemies")]
-    [SerializeField] private Transform[,] enemyPatrolPoints;
-    public Transform[,] EnemyPatrolPoints { get { return enemyPatrolPoints; } set { enemyPatrolPoints = value; } }
-    [SerializeField] private Transform[] enemy1PatrolPoints, enemy2PatrolPoints, enemy3PatrolPoints, enemy4PatrolPoints;
+    [SerializeField] private List<List<Transform>> enemyPatrolPointsList = new List<List<Transform>>();
+    public List<List<Transform>> EnemyPatrolPointsList { get { return enemyPatrolPointsList; } set { enemyPatrolPointsList = value; } }
+    // [SerializeField] private List<Transform> enemy1PatrolPoints, enemy2PatrolPoints, enemy3PatrolPoints, enemy4PatrolPoints = new List<Transform>();
+    [SerializeField] private List<GameObject> enemy1PatrolPointsTemplates, enemy2PatrolPointsTemplates, enemy3PatrolPointsTemplates, enemy4PatrolPointsTemplates = new List<GameObject>();
 
     [Header("UI")]
     [SerializeField] private TMPro.TextMeshProUGUI levelIndexText;
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        GetAllPatrolPoints();
+        // GetAllPatrolPoints();
     }
 
     void Update()
@@ -117,27 +119,55 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GetAllPatrolPoints()
-    {
-        if (enemyPatrolPoints != null) return;
+    // public void GetAllPatrolPoints()
+    // {
+    //     if (enemyPatrolPointsList != null) return;
 
-        enemyPatrolPoints = new Transform[4, 4]
+    //     enemyPatrolPointsList = new List<List<Transform>>
+    //     {
+    //         enemy1PatrolPoints,
+    //         enemy2PatrolPoints,
+    //         enemy3PatrolPoints,
+    //         enemy4PatrolPoints
+    //     };
+    // }
+
+    public List<Transform> GetPatrolPointsForEnemy(int enemyID, out List<Transform> patrolPoints)
+    {
+        patrolPoints = new List<Transform>();
+        switch (enemyID)
         {
-            { enemy1PatrolPoints[0], enemy1PatrolPoints[1], enemy1PatrolPoints[2], enemy1PatrolPoints[3] },
-            { enemy2PatrolPoints[0], enemy2PatrolPoints[1], enemy2PatrolPoints[2], enemy2PatrolPoints[3] },
-            { enemy3PatrolPoints[0], enemy3PatrolPoints[1], enemy3PatrolPoints[2], enemy3PatrolPoints[3] },
-            { enemy4PatrolPoints[0], enemy4PatrolPoints[1], enemy4PatrolPoints[2], enemy4PatrolPoints[3] }
-        };
+            case 0:
+                GetRandomTemplate(enemy1PatrolPointsTemplates).GetComponentsInChildren<Transform>(true, patrolPoints);
+                break;
+            case 1:
+                GetRandomTemplate(enemy2PatrolPointsTemplates).GetComponentsInChildren<Transform>(true, patrolPoints);
+                break;
+            case 2:
+                GetRandomTemplate(enemy3PatrolPointsTemplates).GetComponentsInChildren<Transform>(true, patrolPoints);
+                break;
+            case 3:
+                GetRandomTemplate(enemy4PatrolPointsTemplates).GetComponentsInChildren<Transform>(true, patrolPoints);
+                break;
+            default:
+                Debug.LogWarning("Invalid enemyID: " + enemyID);
+                break;
+        }
+        patrolPoints.RemoveAt(0); // Remove the parent object from the list, leaving only the child patrol points
+        
+        return patrolPoints;
     }
 
-    public Transform[] GetPatrolPointsForEnemy(int enemyID, out Transform[] patrolPoints)
+    GameObject GetRandomTemplate(List<GameObject> templates)
     {
-        patrolPoints = new Transform[4];
-        for (int i = 0; i < 4; i++)
+        if (templates == null || templates.Count == 0)
         {
-            patrolPoints[i] = enemyPatrolPoints[enemyID, i];
+            Debug.LogError("Templates list is empty or null.");
+            return null;
         }
-        return patrolPoints;
+
+        int randomIndex = Random.Range(0, templates.Count);
+        return templates[randomIndex];
     }
 
     public void ChangeScene(string sceneName)

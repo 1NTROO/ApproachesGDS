@@ -6,7 +6,7 @@ public class ItemSO : ScriptableObject
     public string itemName;
     public StatToModify statToModify = new StatToModify();
     public float statModifyValue;
-    public bool canManuallyConsume, canBeConsumed;
+    public bool canManuallyConsume, canBeConsumed, isContraband;
 
 
     public void UseItem()

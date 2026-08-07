@@ -17,3 +17,4 @@ MonoBehaviour:
   statModifyValue: 0.5
   canManuallyConsume: 0
   canBeConsumed: 0
+  isContraband: 1

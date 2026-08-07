@@ -32,7 +32,7 @@ public class PlayerCollision : MonoBehaviour
     {
         if (other.gameObject.layer == 8) // Pickups
         {
-            Debug.Log("Triggered with Pickup!");
+            // Debug.Log("Triggered with Pickup!");
             
             other.gameObject.SetActive(false);
 
@@ -50,7 +50,7 @@ public class PlayerCollision : MonoBehaviour
         }
         if (other.gameObject.layer == 11) // Power Pickup
         {
-            Debug.Log("Triggered with Power Pickup!");
+            // Debug.Log("Triggered with Power Pickup!");
 
             other.gameObject.SetActive(false);
 

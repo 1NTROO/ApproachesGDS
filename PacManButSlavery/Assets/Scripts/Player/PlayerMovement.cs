@@ -61,15 +61,12 @@ public class PlayerMovement : MonoBehaviour
                 isRegeneratingStamina = false;
             }
 
-            print("Started consuming stamina");
-
             isConsumingStamina = true;
             StartCoroutine("StaminaConsumption");
         }
 
         if (!isMoving && !isRegeneratingStamina)
         {
-            print("Started regenerating stamina");
             isRegeneratingStamina = true;
             staminaRegenerationDelayTimer = 0f;
         }
@@ -98,26 +95,26 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetFloat("AnimSpeedModifier", PlayerStatsManager.Instance.SpeedModifier);
 
-        if (!isMoving)
-        {
-            graceTimerCurrent += Time.deltaTime;
-            if (graceTimerCurrent >= graceTimer)
-            {
-                GameManager.Instance.TransformPlayer = transform;
-            }
-        }
-        else if (isMoving)
-        {
-            if (graceTimerCurrent > 0f)
-            {
-                graceTimerCurrent -= Time.deltaTime;
-                if (graceTimerCurrent < 0f)
-                {
-                    graceTimerCurrent = 0f;
-                }
-                GameManager.Instance.TransformPlayer = null;
-            }
-        } 
+        // if (!isMoving)
+        // {
+        //     graceTimerCurrent += Time.deltaTime;
+        //     if (graceTimerCurrent >= graceTimer)
+        //     {
+        //         GameManager.Instance.TransformPlayer = transform;
+        //     }
+        // }
+        // else if (isMoving)
+        // {
+        //     if (graceTimerCurrent > 0f)
+        //     {
+        //         graceTimerCurrent -= Time.deltaTime;
+        //         if (graceTimerCurrent < 0f)
+        //         {
+        //             graceTimerCurrent = 0f;
+        //         }
+        //         GameManager.Instance.TransformPlayer = null;
+        //     }
+        // } 
     }
 
     void GetInput()

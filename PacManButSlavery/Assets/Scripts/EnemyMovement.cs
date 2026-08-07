@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class EnemyMovement : MonoBehaviour
     private EnemyState currentState = EnemyState.Patrolling;
     public EnemyState CurrentState { get { return currentState; } }
 
-    public Transform[] patrolPoints;
+    public List<Transform> patrolPoints;
     private int currentPatrolIndex;
     private Transform playerTransform;
     private NavMeshAgent agent;
@@ -36,7 +37,13 @@ public class EnemyMovement : MonoBehaviour
 
         animator = GetComponentInChildren<Animator>();
 
-        if (patrolPoints.Length > 0)
+
+        if (patrolPoints.Count == 0)
+        {
+            GameManager.Instance.GetPatrolPointsForEnemy(enemyID, out patrolPoints);
+        }
+
+        if (patrolPoints.Count > 0)
         {
             currentPatrolIndex = 0;
             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
@@ -48,21 +55,23 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (patrolPoints.Length == 0)
+        if (GameManager.Instance.PlayerHasContraband)
         {
-            GameManager.Instance.GetPatrolPointsForEnemy(enemyID, out patrolPoints);
+            if (PlayerInSightCheck())
+            {
+                currentState = EnemyState.Chasing;
+                playerTransform = FindAnyObjectByType<PlayerMovement>().transform;
+            }
+            else
+            {
+                currentState = EnemyState.Patrolling;
+            }
+        }
+        else
+        {
+            currentState = EnemyState.Patrolling;
         }
 
-        if (GameManager.Instance.TransformPlayer != null && Vector3.Distance(transform.position, GameManager.Instance.TransformPlayer.position) < chaseDistance)
-        {
-            playerTransform = GameManager.Instance.TransformPlayer;
-            currentState = EnemyState.Chasing;
-        }
-        else if (currentState == EnemyState.Chasing)
-        {
-            currentState = EnemyState.Returning;
-        }
-        
         switch (currentState)
         {
             case EnemyState.Patrolling:
@@ -76,6 +85,11 @@ public class EnemyMovement : MonoBehaviour
                 break;
         }
 
+
+        var pos = transform.position;
+        pos.z = 0; // Keep the enemy on the same Z plane
+        transform.position = pos;
+
         Vector3 normalizedVelocity = Vector3.ClampMagnitude(agent.velocity, 1f);
 
         animator.SetFloat("velocityX", normalizedVelocity.x);
@@ -86,20 +100,43 @@ public class EnemyMovement : MonoBehaviour
 
     public void SetPatrolPoints(Transform[] points)
     {
-        patrolPoints = points;
-        if (patrolPoints.Length > 0)
+        patrolPoints = new List<Transform>(points);
+        if (patrolPoints.Count > 0)
         {
             currentPatrolIndex = 0;
             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
         }
     }
 
+    bool PlayerInSightCheck()
+    {
+        Vector3 start = transform.position;
+        Vector3 dir = (FindAnyObjectByType<PlayerMovement>().transform.position - transform.position).normalized;
+        float distance = chaseDistance * PlayerStatsManager.Instance.ThreatDetectionModifier;
+
+        // Debug.DrawRay(start, dir * distance, Color.black);
+
+        RaycastHit2D sightTest = Physics2D.Raycast(start, dir, distance, ~LayerMask.GetMask("Enemy"));
+        if (sightTest.collider != null)
+        {
+            Debug.Log(sightTest.collider.gameObject.name);
+            if (sightTest.collider.gameObject.name == "Player")
+            {
+                Debug.Log("Found the player");
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     void Patrol()
     {
         if (!agent.pathPending && agent.remainingDistance < 0.2f)
         {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Count;
             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+            Debug.Log("Patrolling to point " + currentPatrolIndex + ": " + patrolPoints[currentPatrolIndex].position);
         }
 
     }
@@ -118,7 +155,7 @@ public class EnemyMovement : MonoBehaviour
 
     void ReturnToPatrol()
     {
-        if (patrolPoints.Length > 0)
+        if (patrolPoints.Count > 0)
         {
             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
         }

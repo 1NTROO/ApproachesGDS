@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour
@@ -5,6 +6,8 @@ public class PlayerInventoryManager : MonoBehaviour
     public GameObject inventoryPanel;
     public ItemSlot[] itemSlots;
     public ItemSO[] itemSOs;
+    private bool isCarryingContraband = false;
+    public bool IsCarryingContraband { get { return isCarryingContraband; } }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,6 +31,10 @@ public class PlayerInventoryManager : MonoBehaviour
                     return false; // Cannot use the item if the manualConsume flag does not match the item's canManuallyConsume property
                 }
                 SO.UseItem();
+                if (!ContrabandCheck(itemName))
+                {
+                    isCarryingContraband = false;
+                }
                 return true;
             }
         }
@@ -59,6 +66,10 @@ public class PlayerInventoryManager : MonoBehaviour
             {
                 itemSlots[i].AddItem(itemName, itemThumbnail, itemDescription, isContraband, itemType);
                 EquipItem(itemName); // Equip the item when added to inventory
+                if (ContrabandCheck(itemName))
+                {
+                    isCarryingContraband = true;
+                }
                 break;
             }
         }
@@ -71,6 +82,20 @@ public class PlayerInventoryManager : MonoBehaviour
             slot.selectedItemHighlight.SetActive(false);
             slot.isSelected = false;
         }
+    }
+
+    private bool ContrabandCheck(string itemName)
+    {
+        foreach (var SO in itemSOs)
+        {
+            if (SO.itemName == itemName && SO.isContraband)
+            {
+                GameManager.Instance.PlayerHasContraband = true;
+                return true;
+            }
+        }
+        GameManager.Instance.PlayerHasContraband = false;
+        return false;
     }
 }
 

@@ -127,7 +127,7 @@ public class PlayerStatsManager : MonoBehaviour
     public void AddPoints(int amount)
     {
         pointsTotal += amount;
-        Debug.Log("Points: " + pointsTotal);
+        // Debug.Log("Points: " + pointsTotal);
 
         UpdatePointsUI();
     }
@@ -135,7 +135,7 @@ public class PlayerStatsManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         moneyTotal += Mathf.RoundToInt(amount * moneyGainModifier);
-        Debug.Log("Money: " + moneyTotal);
+        // Debug.Log("Money: " + moneyTotal);
 
         UpdateMoneyUI();
     }
