@@ -103,7 +103,7 @@ public class CurrentLevelManager : MonoBehaviour
         if (GetPickupCount() == 0)
         {
             Debug.Log("Level Complete!");
-            PlayerStatsManager.Instance.EndOfLevelReset();
+            // GameManager.Instance.LevelEnd();
         }
         else
         {
@@ -112,7 +112,7 @@ public class CurrentLevelManager : MonoBehaviour
         }
     }
 
-    int GetPickupCount()
+    public int GetPickupCount()
     {
         int pickupCount = 0;
         foreach (Transform child in pickupParent.transform)

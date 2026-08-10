@@ -109,7 +109,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    private void ClearSlot()
+    public void ClearSlot()
     {
         itemName = "";
         // itemThumbnail = null;

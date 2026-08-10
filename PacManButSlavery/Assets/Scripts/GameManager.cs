@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TMPro.TextMeshProUGUI levelIndexText;
+    [SerializeField] private GameObject levelTransitionFade;
 
     private int levelIndex = 0;
 
@@ -98,6 +100,37 @@ public class GameManager : MonoBehaviour
         //     }
             
         // }
+    }
+
+    public void LevelEnd(bool safeExit = true)
+    {
+        if (levelTransitionFade == null)
+        {
+            levelTransitionFade = GameObject.FindGameObjectWithTag("LevelTransition");
+        }
+        levelTransitionFade.GetComponent<LevelTransition>().FadeOutEndLevel(safeExit);        
+    }
+
+    public void LevelReset(bool safeExit = true)
+    {
+        PlayerStatsManager.Instance.EndOfLevelReset(safeExit);
+        PlayerInventoryManager playerInventory = FindAnyObjectByType<PlayerInventoryManager>();
+        playerInventory.EndOfLevel(safeExit);
+
+        if (safeExit && PlayerStatsManager.Instance.EndGameCheck())
+        {
+            WinGame();
+        }
+
+        else
+        {
+            ChangeScene("SampleScene");
+        }
+    }
+
+    public void WinGame()
+    {
+        Application.Quit(0);
     }
 
     public void ToggleShop(bool isActive)
@@ -172,7 +205,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeScene(string sceneName)
     {
-        ToggleShop(false);
+        // ToggleShop(false);
         SceneManager.LoadScene(sceneName);
         Debug.Log("Changing scene to: " + sceneName);
         levelIndex++;

@@ -73,12 +73,16 @@ public class PlayerCollision : MonoBehaviour
                 {
                     staminaDamageTaken *= 0.5f; // Reduce stamina damage by 50% if the enemy is not chasing
                 }
+                else
+                {
+                    GameManager.Instance.LevelEnd(false);
+                }
             }
-            if (!isTakingStaminaDamage)
-            {
-                numericals.TakeStaminaDamage(staminaDamageTaken);
-                isTakingStaminaDamage = true;
-            }
+            // if (!isTakingStaminaDamage)
+            // {
+            //     numericals.TakeStaminaDamage(staminaDamageTaken);
+            //     isTakingStaminaDamage = true;
+            // }
         }
     }
 

@@ -248,18 +248,32 @@ public class PlayerStatsManager : MonoBehaviour
         }
     }
 
-    public void EndOfLevelReset()
+    public bool EndGameCheck()
+    {
+        bool b = true;
+        if (moneyTotal < wealthGoal) b = false;
+        else if (literacy < literacyGoal) b = false;
+        else if (nutrition < nutritionGoal) b = false;
+        return b;
+    }
+
+    public void EndOfLevelReset(bool safeExit = true)
     {
         pointsTotal = 0;
 
         pointsUI = null;
         moneyUI = null;
 
-        BulkGainStamina((maxStamina - currentStamina) * 0.35f + // Gain 35% of missing stamina always
-                        (currentStamina / maxStamina * 25f));   // Gain up to 25% of max stamina based on current stamina percentage, gaining more stamina if the player has more stamina left
-                                                                // Rewards higher stamina, simulating exhaustion and recovery, while making it possible for players to die if they are not careful.
-
-        GameManager.Instance.ToggleShop(true);
+        if (safeExit)
+        {
+            BulkGainStamina((maxStamina - currentStamina) * 0.35f + // Gain 35% of missing stamina always
+                            (currentStamina / maxStamina * 25f));   // Gain up to 25% of max stamina based on current stamina percentage, gaining more stamina if the player has more stamina left
+                                                                    // Rewards higher stamina, simulating exhaustion and recovery, while making it possible for players to die if they are not careful.
+        }
+        else
+        {
+            BulkGainStamina(currentStamina * -0.25f); // if the player had an unsafe exit (to enemies catching them with contraband), lose stamina instead.
+        }
     }
 
     public void TakeStaminaDamage(float amount)

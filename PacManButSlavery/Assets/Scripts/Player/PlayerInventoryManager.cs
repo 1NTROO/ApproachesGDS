@@ -11,13 +11,13 @@ public class PlayerInventoryManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public bool UseItem(string itemName, bool manualConsume)
@@ -31,10 +31,8 @@ public class PlayerInventoryManager : MonoBehaviour
                     return false; // Cannot use the item if the manualConsume flag does not match the item's canManuallyConsume property
                 }
                 SO.UseItem();
-                if (!ContrabandCheck(itemName))
-                {
-                    isCarryingContraband = false;
-                }
+                isCarryingContraband = ItemSlotsContrabandCheck();
+                GameManager.Instance.PlayerHasContraband = isCarryingContraband;
                 return true;
             }
         }
@@ -66,10 +64,8 @@ public class PlayerInventoryManager : MonoBehaviour
             {
                 itemSlots[i].AddItem(itemName, itemThumbnail, itemDescription, isContraband, itemType);
                 EquipItem(itemName); // Equip the item when added to inventory
-                if (ContrabandCheck(itemName))
-                {
-                    isCarryingContraband = true;
-                }
+                isCarryingContraband = ContrabandCheck(itemName);
+                GameManager.Instance.PlayerHasContraband = isCarryingContraband;
                 break;
             }
         }
@@ -90,12 +86,46 @@ public class PlayerInventoryManager : MonoBehaviour
         {
             if (SO.itemName == itemName && SO.isContraband)
             {
-                GameManager.Instance.PlayerHasContraband = true;
                 return true;
             }
         }
-        GameManager.Instance.PlayerHasContraband = false;
         return false;
+    }
+
+    public bool ItemSlotsContrabandCheck()
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (ContrabandCheck(itemSlots[i].name)) return true;
+        }
+        return false;
+    }
+
+    public void EndOfLevel(bool safeExit = true)
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            foreach (var SO in itemSOs)
+            {
+                if (SO.itemName != itemSlots[i].itemName) continue;
+                else if (!safeExit)
+                {
+                    if (SO.isContraband)
+                    {
+                        itemSlots[i].ClearSlot();
+                        break;
+                    }
+                }
+                else if (SO.canBeConsumed && !SO.canManuallyConsume)
+                {
+                    UseItem(SO.itemName, false);
+                    itemSlots[i].ClearSlot();
+                    break;
+                }
+            }
+        }
+        isCarryingContraband = ItemSlotsContrabandCheck();
+        GameManager.Instance.PlayerHasContraband = isCarryingContraband;
     }
 }
 

@@ -11,6 +11,7 @@ TagManager:
   - LevelIndexText
   - IngameTimeText
   - ShopItemBuyButton
+  - LevelTransition
   layers:
   - Default
   - TransparentFX
