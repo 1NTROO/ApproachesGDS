@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
   thisItemType: 0
+  isContraband: 0
   price: 0
-  itemThumbnail: {fileID: 0}
+  itemThumbnail: {fileID: 289786811, guid: 1786b5cb5d6763845839538c24005675, type: 3}
   itemDescription: 

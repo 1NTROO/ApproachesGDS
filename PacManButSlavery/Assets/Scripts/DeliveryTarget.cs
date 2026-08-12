@@ -9,6 +9,7 @@ public class DeliveryTarget : MonoBehaviour
     private bool isFaded = true;
     private CurrentLevelManager currentLevelManager;
     private PlayerMovement playerMovement;
+    private int lastPickupCount = 350;
     void Start()
     {
         currentLevelManager = FindAnyObjectByType<CurrentLevelManager>();
@@ -23,18 +24,25 @@ public class DeliveryTarget : MonoBehaviour
         {
             if (InputSystem.actions["Interact"].triggered)
             {
-                GameManager.Instance.LevelEnd();
+                lastPickupCount = currentLevelManager.GetPickupCount();
+                if (lastPickupCount == 0) { GameManager.Instance.LevelEnd(); }
             }
         }
     }
 
     public bool PlayerInteractionCheck()
     {
-        if (currentLevelManager.GetPickupCount() > 0)
+        if (currentLevelManager.GetPickupCount() == lastPickupCount)
         {
+            if (!isFaded)
+            {
+                deliveryInteractionPrompt.DOFade(0f, 0.3f); // Fade out the shop interaction prompt
+                deliveryInteractionPrompt.GetComponentInChildren<TMPro.TextMeshProUGUI>().DOFade(0f, 0.3f); // Fade out the prompt text
+                isFaded = true;
+            }
             return false;
         }
-        if (Vector2.Distance(playerMovement.transform.position, transform.position) <= 1.5f) // Check if the player is within interaction range
+        if (Vector2.Distance(playerMovement.transform.position, transform.position) <= 1f) // Check if the player is within interaction range
         {
             if (isFaded)
             {

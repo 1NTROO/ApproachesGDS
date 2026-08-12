@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 18989334, guid: 140ac778329cd6343b3cc0f53190522a, type: 3}
+  m_Sprite: {fileID: 289786811, guid: 1786b5cb5d6763845839538c24005675, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -204,7 +204,7 @@ MonoBehaviour:
   itemThumbnail: {fileID: 0}
   itemDescription: 
   isFull: 0
-  emptySprite: {fileID: 18989334, guid: 140ac778329cd6343b3cc0f53190522a, type: 3}
+  emptySprite: {fileID: 289786811, guid: 1786b5cb5d6763845839538c24005675, type: 3}
   itemImage: {fileID: 3258950725281134965}
   selectedItemHighlight: {fileID: 7964733332242395610}
   isSelected: 0

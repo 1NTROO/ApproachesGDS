@@ -129,7 +129,8 @@ MonoBehaviour:
   itemThumbnail: {fileID: 0}
   itemDescription: 
   isFull: 0
-  emptySprite: {fileID: 18989334, guid: 140ac778329cd6343b3cc0f53190522a, type: 3}
+  emptySprite: {fileID: 289786811, guid: 1786b5cb5d6763845839538c24005675, type: 3}
+  itemPrice: 0
   itemImage: {fileID: 538438350626870310}
   selectedItemHighlight: {fileID: 562681906283661456}
   isSelected: 0
@@ -138,6 +139,7 @@ MonoBehaviour:
   itemDescriptionText: {fileID: 0}
   itemContrabandText: {fileID: 0}
   itemType: 0
+  itemPriceText: {fileID: 0}
 --- !u!1 &8658235011493230225
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 18989334, guid: 140ac778329cd6343b3cc0f53190522a, type: 3}
+  m_Sprite: {fileID: 289786811, guid: 1786b5cb5d6763845839538c24005675, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

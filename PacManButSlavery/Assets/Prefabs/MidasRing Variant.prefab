@@ -23,7 +23,7 @@ PrefabInstance:
     - target: {fileID: -4095693942115265198, guid: 1f6f10ebf3c43ad4e9216de4c4a39979, type: 3}
       propertyPath: itemThumbnail
       value: 
-      objectReference: {fileID: -54424675, guid: 140ac778329cd6343b3cc0f53190522a, type: 3}
+      objectReference: {fileID: 1994329046, guid: 1786b5cb5d6763845839538c24005675, type: 3}
     - target: {fileID: -4095693942115265198, guid: 1f6f10ebf3c43ad4e9216de4c4a39979, type: 3}
       propertyPath: itemDescription
       value: A ring that somehow makes you find more money. Better not question it.
