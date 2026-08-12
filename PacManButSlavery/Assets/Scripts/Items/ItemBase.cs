@@ -31,32 +31,7 @@ public class ItemBase : MonoBehaviour
 
     void Update()
     {
-        switch (thisItemType)
-        {
-            case ItemType.Stamina:
-                // if (InputSystem.actions["Interact1"].triggered)
-                // {
-                //     AddToInventory();
-                // }
-                break;
-            case ItemType.Movement:
-                if (InputSystem.actions["Interact2"].triggered)
-                {
-                    AddToInventory();
-                }
-                break;
-            case ItemType.Threat:
-                break;
-            case ItemType.Literacy:
-                break;
-            case ItemType.Money:
-                break;
-            case ItemType.Bonus:
-                break;
-            default:
-                Debug.LogError("Invalid item type assigned to " + gameObject.name);
-                break;
-        }
+        
     }
 
     public void AddToInventory()

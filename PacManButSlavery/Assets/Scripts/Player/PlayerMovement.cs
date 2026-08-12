@@ -55,36 +55,36 @@ public class PlayerMovement : MonoBehaviour
 
         if (isMoving && !isConsumingStamina)
         {
-            if (isRegeneratingStamina)
-            {
-                StopCoroutine("StaminaRegeneration");
-                isRegeneratingStamina = false;
-            }
+            // if (isRegeneratingStamina)
+            // {
+            //     StopCoroutine("StaminaRegeneration");
+            //     isRegeneratingStamina = false;
+            // }
 
             isConsumingStamina = true;
             StartCoroutine("StaminaConsumption");
         }
 
-        if (!isMoving && !isRegeneratingStamina)
-        {
-            isRegeneratingStamina = true;
-            staminaRegenerationDelayTimer = 0f;
-        }
+        // if (!isMoving && !isRegeneratingStamina)
+        // {
+        //     isRegeneratingStamina = true;
+        //     staminaRegenerationDelayTimer = 0f;
+        // }
         
-        if (isRegeneratingStamina)
-        {
-            if (staminaRegenerationDelayTimer < staminaRegenerationDelay)
-            {
-                staminaRegenerationDelayTimer += Time.deltaTime;
-                if (staminaRegenerationDelayTimer >= staminaRegenerationDelay)
-                {
-                    PlayerStamina stamina = GetComponent<PlayerStamina>();
-                    stamina.RegenerateStamina(staminaRegenerationRate * 0.5f); // Apply half the regeneration rate during the delay period
-                    staminaRegenerationDelayTimer = 2 * staminaRegenerationDelay; // Set timer to a value that indicates the delay period has passed
-                    StartCoroutine("StaminaRegeneration");
-                }
-            }
-        }
+        // if (isRegeneratingStamina)
+        // {
+        //     if (staminaRegenerationDelayTimer < staminaRegenerationDelay)
+        //     {
+        //         staminaRegenerationDelayTimer += Time.deltaTime;
+        //         if (staminaRegenerationDelayTimer >= staminaRegenerationDelay)
+        //         {
+        //             PlayerStamina stamina = GetComponent<PlayerStamina>();
+        //             stamina.RegenerateStamina(staminaRegenerationRate * 0.5f); // Apply half the regeneration rate during the delay period
+        //             staminaRegenerationDelayTimer = 2 * staminaRegenerationDelay; // Set timer to a value that indicates the delay period has passed
+        //             StartCoroutine("StaminaRegeneration");
+        //         }
+        //     }
+        // }
         
         rb.linearVelocity = currentSpeed;
 

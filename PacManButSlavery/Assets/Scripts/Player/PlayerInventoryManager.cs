@@ -3,12 +3,42 @@ using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour
 {
+    private static PlayerInventoryManager instance;
+    public static PlayerInventoryManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindAnyObjectByType<PlayerInventoryManager>();
+                if (instance == null)
+                {
+                    return null;
+                }
+            }
+            return instance;
+        }
+    }
+
     public GameObject inventoryPanel;
     public ItemSlot[] itemSlots;
     public ItemSO[] itemSOs;
     private bool isCarryingContraband = false;
     public bool IsCarryingContraband { get { return isCarryingContraband; } }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
     void Start()
     {
 

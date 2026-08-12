@@ -160,13 +160,13 @@ public class PlayerStatsManager : MonoBehaviour
         }
     }
 
-    public void BulkGainStamina(float amount)
+    public void BulkGainStamina(float amount, float overflowDivisor = 2f)
     {
         currentStamina += amount;
         if (currentStamina > maxStamina)
         {
             float overflow = currentStamina - maxStamina;
-            ModifyNutrition(overflow / 2f); // Convert 50% of the overflow into nutrition
+            ModifyNutrition(overflow / overflowDivisor); // Convert 50% of the overflow into nutrition
         }
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
@@ -267,8 +267,14 @@ public class PlayerStatsManager : MonoBehaviour
         if (safeExit)
         {
             BulkGainStamina((maxStamina - currentStamina) * 0.35f + // Gain 35% of missing stamina always
-                            (currentStamina / maxStamina * 25f));   // Gain up to 25% of max stamina based on current stamina percentage, gaining more stamina if the player has more stamina left
+                            (currentStamina / maxStamina * 15f));   // Gain up to 15% of max stamina based on current stamina percentage, gaining more stamina if the player has more stamina left
                                                                     // Rewards higher stamina, simulating exhaustion and recovery, while making it possible for players to die if they are not careful.
+        
+            if (currentStamina < maxStamina && nutrition > 0)
+            {
+                BulkGainStamina(nutrition, 1);
+            }
+        
         }
         else
         {

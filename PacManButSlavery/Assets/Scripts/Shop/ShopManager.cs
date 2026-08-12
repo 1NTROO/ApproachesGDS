@@ -16,7 +16,7 @@ public class ShopManager : MonoBehaviour
     [Header("UI Settings")]
     public GameObject shopPanel; // Reference to the shop UI panel
     public ShopItemSlot[] itemSlots; // Array to hold the item slots in the shop UI
-    public Button buyButton; // Reference to the buy button in the shop UI
+    public Button buyButton, exitShopButton; // Reference to the buy and exit buttons in the shop UI
     public Image shopInteractionPrompt; // Reference to the shop interaction prompt UI element
 
     private bool isFaded = true; // Flag to check if the shop interaction prompt is faded in or out
@@ -61,6 +61,14 @@ public class ShopManager : MonoBehaviour
         else
         {
             Debug.LogError("Buy Button is not assigned in the inspector.");
+        }
+        if (exitShopButton != null)
+        {
+            exitShopButton.onClick.AddListener(() => CloseShop());
+        }
+        else
+        {
+            Debug.LogError("Shop exit button is not assigned in the inspector.");
         }
     }
 

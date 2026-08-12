@@ -38,6 +38,7 @@ public class CurrentLevelManager : MonoBehaviour
         GeneratePickups(GetRandomTemplate(templatesRight));
 
         spawnLocationObj.GetComponentsInChildren<Transform>(true, spawnLocations);
+
     }
 
     void Update()
@@ -48,6 +49,7 @@ public class CurrentLevelManager : MonoBehaviour
         if (ingameTimeText == null)
         {
             ingameTimeText = GameObject.FindGameObjectWithTag("IngameTimeText").GetComponent<TMPro.TextMeshProUGUI>();
+            ingameTimeText.text = "08:00";
             if (ingameTimeText == null)
             {
                 Debug.LogError("IngameTimeText TextMeshProUGUI not found in the scene. Please assign it in the inspector or tag it as 'IngameTimeText'.");
