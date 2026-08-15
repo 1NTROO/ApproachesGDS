@@ -73,32 +73,31 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         {
             selectedItemHighlight.SetActive(true);
             isSelected = true;
+
+            if (itemName == "") return;
+
+            itemDescriptionImage.sprite = itemThumbnail;
+            itemNameText.text = itemName;
+            itemDescriptionText.text = itemDescription;
+
+            if (itemIsContraband)
+            {
+                itemContrabandText.text = "Contraband";
+                itemContrabandText.color = Color.red;
+            }
+            else
+            {
+                itemContrabandText.text = "Safe";
+                itemContrabandText.color = Color.white;
+            }
+
+            if (itemDescriptionImage.sprite == null)
+            {
+                itemDescriptionImage.sprite = emptySprite;
+            }
+
+            itemDescriptionImage.color = Color.white;
         }
-        else return;
-
-        if (itemName == "") return;
-
-        itemDescriptionImage.sprite = itemThumbnail;
-        itemNameText.text = itemName;
-        itemDescriptionText.text = itemDescription;
-
-        if (itemIsContraband)
-        {
-            itemContrabandText.text = "Contraband";
-            itemContrabandText.color = Color.red;
-        }
-        else
-        {
-            itemContrabandText.text = "Safe";
-            itemContrabandText.color = Color.white;
-        }
-
-        if (itemDescriptionImage.sprite == null)
-        {
-            itemDescriptionImage.sprite = emptySprite;
-        }
-
-        itemDescriptionImage.color = Color.white;
 
     }
 
