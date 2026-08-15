@@ -67,9 +67,14 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnLeftClick()
     {
+        bool wasSelected = isSelected;
         inventoryManager.DeselectAllItems();
-        selectedItemHighlight.SetActive(true);
-        isSelected = true;
+        if (!wasSelected)
+        {
+            selectedItemHighlight.SetActive(true);
+            isSelected = true;
+        }
+        else return;
 
         if (itemName == "") return;
 
