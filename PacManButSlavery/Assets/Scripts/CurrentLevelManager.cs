@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Numerics;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class CurrentLevelManager : MonoBehaviour
 {
@@ -28,6 +30,8 @@ public class CurrentLevelManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TMPro.TextMeshProUGUI ingameTimeText;
+    [SerializeField] private GameObject pauseScreen;
+    [SerializeField] private Button resumeButton, resetButton, exitButton;
 
     void Start()
     {
@@ -39,6 +43,9 @@ public class CurrentLevelManager : MonoBehaviour
 
         spawnLocationObj.GetComponentsInChildren<Transform>(true, spawnLocations);
 
+
+
+        pauseScreen.SetActive(false);
     }
 
     void Update()
@@ -55,6 +62,13 @@ public class CurrentLevelManager : MonoBehaviour
                 Debug.LogError("IngameTimeText TextMeshProUGUI not found in the scene. Please assign it in the inspector or tag it as 'IngameTimeText'.");
             }
         }
+
+        if (InputSystem.actions["Pause"].triggered)
+        {
+            if (Time.timeScale == 1f) PauseGame();
+            else if (Time.timeScale == 0f) ResumeGame();
+        }
+
     }
 
     void GeneratePickups(GameObject obj)
@@ -142,4 +156,32 @@ public class CurrentLevelManager : MonoBehaviour
             ingameTimeText.text = displayText;
         }
     }
+
+    public void PauseGame()
+    {
+        pauseScreen.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        pauseScreen.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void FullResetGame()
+    {
+        Destroy(PlayerInventoryManager.Instance.gameObject);
+        Destroy(PlayerStatsManager.Instance.gameObject);
+        Destroy(AudioManager.Instance.gameObject);
+        Destroy(GameManager.Instance.gameObject);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit(0);
+    }
+
 }

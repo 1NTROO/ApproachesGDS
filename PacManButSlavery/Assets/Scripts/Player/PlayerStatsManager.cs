@@ -98,13 +98,13 @@ public class PlayerStatsManager : MonoBehaviour
             currentStamina = maxStamina;
         }
 
-
     }
 
     void Update()
     {
         if (pointsUI == null)
         {
+            if (SceneManager.GetActiveScene().name == "MainMenuScene") return;
             pointsUI = GameObject.FindGameObjectWithTag("PointsUI").GetComponent<TMPro.TextMeshProUGUI>();
             UpdatePointsUI();
             if (pointsUI == null)
@@ -115,6 +115,7 @@ public class PlayerStatsManager : MonoBehaviour
 
         if (moneyUI == null)
         {
+            if (SceneManager.GetActiveScene().name == "MainMenuScene") return;
             moneyUI = GameObject.FindGameObjectWithTag("MoneyUI").GetComponent<TMPro.TextMeshProUGUI>();
             UpdateMoneyUI();
             if (moneyUI == null)
@@ -301,5 +302,5 @@ public class PlayerStatsManager : MonoBehaviour
             // StartCoroutine(TakeStaminaDamageCoroutine(amount));
         }
     }
-    
+
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerStamina : MonoBehaviour
@@ -31,6 +32,8 @@ public class PlayerStamina : MonoBehaviour
     void Update()
     {
         UpdateStaminaUI();
+
+        DeathCheck();
     }
 
     public void ConsumeStamina(float amount)
@@ -51,6 +54,19 @@ public class PlayerStamina : MonoBehaviour
         if (staminaBar != null)
         {
             staminaBar.value = statsManager.CurrentStamina;
+        }
+    }
+
+    public void DeathCheck()
+    {
+        if (statsManager.CurrentStamina > 0 || statsManager.Nutrition > 0) return;
+        else
+        {
+            Destroy(PlayerInventoryManager.Instance.gameObject);
+            Destroy(PlayerStatsManager.Instance.gameObject);
+            Destroy(AudioManager.Instance.gameObject);
+            Destroy(GameManager.Instance.gameObject);
+            SceneManager.LoadScene("MainMenuScene");
         }
     }
 }

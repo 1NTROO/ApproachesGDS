@@ -98,6 +98,13 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
             itemDescriptionImage.color = Color.white;
         }
+        else
+        {
+            itemDescriptionImage.sprite = emptySprite;
+            itemNameText.text = "";
+            itemDescriptionText.text = "";
+            itemContrabandText.text = "";
+        }
 
     }
 
